@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="main">
+    <!-- <div class="main">
       <div class="main__wrapper">
         <div class="main__header">
           <img
@@ -17,13 +17,19 @@
           <b>«Vue.js для опытных разработчиков».</b>
         </p>
       </div>
-    </div>
+    </div> -->
+    <IndexHome />
   </div>
 </template>
 
 <script>
+import IndexHome from "@/views/Index";
+
 export default {
   name: "App",
+  components: {
+    IndexHome,
+  },
 };
 </script>
 

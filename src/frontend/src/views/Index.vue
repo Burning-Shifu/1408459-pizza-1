@@ -27,24 +27,16 @@
           <div class="content__dough">
             <div class="sheet">
               <h2 class="title title--small sheet__title">Выберите тесто</h2>
-
               <div class="sheet__content dough">
-                <label
+                <BuilderDoughSelector
                   v-for="dough in pizza.dough"
                   :key="dough.id"
                   class="dough__input"
                   :class="`dough__input--${features.dough[dough.id]}`"
-                >
-                  <input
-                    type="radio"
-                    name="dought"
-                    :value="features.dough[dough.id]"
-                    class="visually-hidden"
-                    :checked="dough.id == 1"
-                  />
-                  <b>{{ dough.name }}</b>
-                  <span>{{ dough.description }}</span>
-                </label>
+                  :dough="dough"
+                  :featuresDough="features.dough"
+                  @doughValue="getDoughValue"
+                />
               </div>
             </div>
           </div>
@@ -54,21 +46,15 @@
               <h2 class="title title--small sheet__title">Выберите размер</h2>
 
               <div class="sheet__content diameter">
-                <label
+                <BuilderSizeSelector
                   v-for="sizes in pizza.sizes"
                   :key="sizes.id"
                   class="diameter__input"
-                  :class="`diameter__input--${features.diameter[sizes.id]}`"
-                >
-                  <input
-                    type="radio"
-                    name="diameter"
-                    :value="features.diameter[sizes.id]"
-                    class="visually-hidden"
-                    :checked="sizes.id == 2"
-                  />
-                  <span>{{ sizes.name }}</span>
-                </label>
+                  :class="`diameter__input--${features.sizes[sizes.id]}`"
+                  :sizes="sizes"
+                  :featuresSizes="features.sizes"
+                  @sizesValue="getSizesValue"
+                />
               </div>
             </div>
           </div>
@@ -83,59 +69,27 @@
                 <div class="ingredients__sauce">
                   <p>Основной соус:</p>
 
-                  <label
+                  <BuilderSausesSelector
                     v-for="sauces in pizza.sauces"
                     :key="sauces.id"
                     class="radio ingredients__input"
-                  >
-                    <input
-                      type="radio"
-                      name="sauce"
-                      :value="features.sauces[sauces.id]"
-                      :checked="sauces.id == 1"
-                    />
-                    <span>{{ sauces.name }}</span>
-                  </label>
+                    :sauces="sauces"
+                    :featuresSauces="features.sauces"
+                    @saucesValue="getSaucesValue"
+                  />
                 </div>
 
                 <div class="ingredients__filling">
                   <p>Начинка:</p>
 
                   <ul class="ingredients__list">
-                    <li
+                    <BuilderIngredientsSelector
                       v-for="ingredients in pizza.ingredients"
                       :key="ingredients.id"
                       class="ingredients__item"
-                    >
-                      <span
-                        class="filling"
-                        :class="`filling--${features.ingr[ingredients.id]}`"
-                      >
-                        {{ ingredients.name }}
-                      </span>
-
-                      <div class="counter counter--orange ingredients__counter">
-                        <button
-                          type="button"
-                          class="counter__button counter__button--minus"
-                          disabled
-                        >
-                          <span class="visually-hidden">Меньше</span>
-                        </button>
-                        <input
-                          type="text"
-                          name="counter"
-                          class="counter__input"
-                          value="0"
-                        />
-                        <button
-                          type="button"
-                          class="counter__button counter__button--plus"
-                        >
-                          <span class="visually-hidden">Больше</span>
-                        </button>
-                      </div>
-                    </li>
+                      :ingredients="ingredients"
+                      :featuresIngr="features.ingr"
+                    />
                   </ul>
                 </div>
               </div>
@@ -153,13 +107,10 @@
             </label>
 
             <div class="content__constructor">
-              <div class="pizza pizza--foundation--big-tomato">
-                <div class="pizza__wrapper">
-                  <div class="pizza__filling pizza__filling--ananas"></div>
-                  <div class="pizza__filling pizza__filling--bacon"></div>
-                  <div class="pizza__filling pizza__filling--cheddar"></div>
-                </div>
-              </div>
+              <BuilderPizzaView
+                class="pizza"
+                :class="`pizza--foundation--${order.doughValue}-${order.saucesValue}`"
+              />
             </div>
 
             <div class="content__result">
@@ -177,9 +128,21 @@
 import misc from "@/static/misc.json";
 import pizza from "@/static/pizza.json";
 import user from "@/static/user.json";
+import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
+import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
+import BuilderSausesSelector from "@/modules/builder/components/BuilderSausesSelector";
+import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
+import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 
 export default {
   name: "IndexHome",
+  components: {
+    BuilderDoughSelector,
+    BuilderPizzaView,
+    BuilderSausesSelector,
+    BuilderIngredientsSelector,
+    BuilderSizeSelector,
+  },
   data() {
     return {
       misc,
@@ -190,7 +153,7 @@ export default {
           1: "light",
           2: "large",
         },
-        diameter: {
+        sizes: {
           1: "small",
           2: "normal",
           3: "big",
@@ -217,7 +180,27 @@ export default {
           15: "blue_cheese",
         },
       },
+      order: {
+        doughValue: "light",
+        sizeValue: "",
+        saucesValue: "tomato",
+        ingredientsValue: [],
+      },
     };
+  },
+  methods: {
+    getDoughValue(value) {
+      this.order.doughValue = value;
+      console.log("child component said: DoughValue", value);
+    },
+    getSaucesValue(value) {
+      this.order.saucesValue = value;
+      console.log("child component said: SaucesValue", value);
+    },
+    getSizesValue(value) {
+      this.order.sizesValue = value;
+      console.log("child component said: SizesValue", value);
+    },
   },
 };
 </script>

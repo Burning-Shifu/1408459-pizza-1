@@ -3,7 +3,8 @@
     <input
       type="radio"
       name="diameter"
-      :value="features.sizes[sizes.id]"
+      :value="featuresSizes[sizes.id]"
+      @click="sendSizeValue"
       class="visually-hidden"
       :checked="sizes.id == 2"
     />
@@ -16,7 +17,7 @@ export default {
   name: "BuilderSizeSelector.vue",
   data() {
     return {
-      saucesValue: this.featuresSizes[this.sizes.id],
+      sizeValue: this.featuresSizes[this.sizes.id],
     };
   },
   props: {
@@ -30,9 +31,9 @@ export default {
     },
   },
   methods: {
-    sendSizesValue() {
-      this.$emit("sizesValue", this.sizesValue);
-      console.log(this.sizesValue);
+    sendSizeValue() {
+      this.$emit("sizeValue", this.sizeValue);
+      console.log(this.sizeValue);
     },
   },
 };

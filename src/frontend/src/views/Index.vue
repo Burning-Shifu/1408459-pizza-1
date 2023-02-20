@@ -53,7 +53,7 @@
                   :class="`diameter__input--${features.sizes[sizes.id]}`"
                   :sizes="sizes"
                   :featuresSizes="features.sizes"
-                  @sizesValue="getSizesValue"
+                  @sizeValue="getSizeValue"
                 />
               </div>
             </div>
@@ -89,6 +89,7 @@
                       class="ingredients__item"
                       :ingredients="ingredients"
                       :featuresIngr="features.ingr"
+                      @ingredientValue="getIngredientsValue"
                     />
                   </ul>
                 </div>
@@ -182,9 +183,9 @@ export default {
       },
       order: {
         doughValue: "light",
-        sizeValue: "",
+        sizeValue: "normal",
         saucesValue: "tomato",
-        ingredientsValue: [],
+        ingredientsValue: {},
       },
     };
   },
@@ -197,9 +198,22 @@ export default {
       this.order.saucesValue = value;
       console.log("child component said: SaucesValue", value);
     },
-    getSizesValue(value) {
-      this.order.sizesValue = value;
-      console.log("child component said: SizesValue", value);
+    getSizeValue(value) {
+      this.order.sizeValue = value;
+      this.$forceUpdate();
+      console.log("child component said: SizeValue", value);
+      // console.log("order SizeValue", this.order.sizeValue);
+    },
+    getIngredientsValue(value) {
+      if (value in this.order.ingredientsValue === false) {
+        this.$set(this.order.ingredientsValue, value, 1);
+      } else {
+        let num = this.order.ingredientsValue[value];
+        this.order.ingredientsValue[value] = num + 1;
+      }
+      this.$forceUpdate();
+      console.log("child component said: IngredientValue", value);
+      console.log("order IngredientsValue", this.order.ingredientsValue);
     },
   },
 };

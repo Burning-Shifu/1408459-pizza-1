@@ -8,16 +8,24 @@
       <button
         type="button"
         class="counter__button counter__button--minus"
-        disabled
+        @click="sendIngredientValue($event.target), minusCounterIngredient()"
+        :disabled="ingredientCounter == 0"
       >
         <span class="visually-hidden">Меньше</span>
       </button>
-      <input type="text" name="counter" class="counter__input" value="0" />
+      <input
+        type="text"
+        name="counter"
+        class="counter__input"
+        value="0"
+        v-model="ingredientCounter"
+      />
       <button
         type="button"
         class="counter__button counter__button--plus"
         :value="featuresIngr[ingredients.id]"
-        @click="sendIngredientValue"
+        @click="sendIngredientValue($event.target), plusCounterIngredient()"
+        :disabled="ingredientCounter >= 3"
       >
         <span class="visually-hidden">Больше</span>
       </button>
@@ -30,6 +38,7 @@ export default {
   name: "BuilderIngredientsSelector.vue",
   data() {
     return {
+      ingredientCounter: 0,
       ingredientValue: this.featuresIngr[this.ingredients.id],
     };
   },
@@ -44,9 +53,15 @@ export default {
     },
   },
   methods: {
-    sendIngredientValue() {
-      this.$emit("ingredientValue", this.ingredientValue);
+    sendIngredientValue(target) {
+      this.$emit("ingredientValue", this.ingredientValue, target);
       console.log(this.ingredientValue);
+    },
+    plusCounterIngredient() {
+      if (this.ingredientCounter < 3) this.ingredientCounter += 1;
+    },
+    minusCounterIngredient() {
+      if (this.ingredientCounter > 0) this.ingredientCounter -= 1;
     },
   },
 };

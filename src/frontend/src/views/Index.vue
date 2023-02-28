@@ -187,6 +187,7 @@ export default {
         saucesValue: "tomato",
         ingredientsValue: {},
       },
+      target: "",
     };
   },
   methods: {
@@ -204,13 +205,25 @@ export default {
       console.log("child component said: SizeValue", value);
       // console.log("order SizeValue", this.order.sizeValue);
     },
-    getIngredientsValue(value) {
-      if (value in this.order.ingredientsValue === false) {
-        this.$set(this.order.ingredientsValue, value, 1);
+    getIngredientsValue(value, target) {
+      if (target.classList.contains("counter__button--plus")) {
+        if (value in this.order.ingredientsValue === false) {
+          this.$set(this.order.ingredientsValue, value, 1);
+        } else if (this.order.ingredientsValue[value] < 3) {
+          let num = this.order.ingredientsValue[value];
+          this.order.ingredientsValue[value] = num + 1;
+        } else {
+          alert("Кол-во одинаковых ингредиентов не может быть больше 3");
+        }
       } else {
-        let num = this.order.ingredientsValue[value];
-        this.order.ingredientsValue[value] = num + 1;
+        if (this.order.ingredientsValue[value] > 1) {
+          let num = this.order.ingredientsValue[value];
+          this.order.ingredientsValue[value] = num - 1;
+        } else if (this.order.ingredientsValue[value] == 1) {
+          this.$delete(this.order.ingredientsValue, value);
+        }
       }
+
       this.$forceUpdate();
       console.log("child component said: IngredientValue", value);
       console.log("order IngredientsValue", this.order.ingredientsValue);

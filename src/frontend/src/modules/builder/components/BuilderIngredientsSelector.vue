@@ -8,7 +8,11 @@
       <button
         type="button"
         class="counter__button counter__button--minus"
-        @click="sendIngredientValue($event.target), minusCounterIngredient()"
+        @click="
+          sendIngredientValue($event.target),
+            minusCounterIngredient(),
+            deleteIngrFromPizzaView()
+        "
         :disabled="ingredientCounter == 0"
       >
         <span class="visually-hidden">Меньше</span>
@@ -19,12 +23,17 @@
         class="counter__input"
         value="0"
         v-model="ingredientCounter"
+        disabled
       />
       <button
         type="button"
         class="counter__button counter__button--plus"
         :value="featuresIngr[ingredients.id]"
-        @click="sendIngredientValue($event.target), plusCounterIngredient()"
+        @click="
+          sendIngredientValue($event.target),
+            plusCounterIngredient(),
+            addIngrToPizzaView()
+        "
         :disabled="ingredientCounter >= 3"
       >
         <span class="visually-hidden">Больше</span>
@@ -62,6 +71,12 @@ export default {
     },
     minusCounterIngredient() {
       if (this.ingredientCounter > 0) this.ingredientCounter -= 1;
+    },
+    addIngrToPizzaView() {
+      this.$root.$emit("add-to-pizza-view", this.ingredientValue);
+    },
+    deleteIngrFromPizzaView() {
+      this.$root.$emit("delete-from-pizza-view", this.ingredientValue);
     },
   },
 };

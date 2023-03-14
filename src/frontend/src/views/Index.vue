@@ -111,6 +111,7 @@
               <BuilderPizzaView
                 class="pizza"
                 :class="`pizza--foundation--${order.doughValue}-${order.saucesValue}`"
+                :orderIngredients="order.ingredientsValue"
               />
             </div>
 

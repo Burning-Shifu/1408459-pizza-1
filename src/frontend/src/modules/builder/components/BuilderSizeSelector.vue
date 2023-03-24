@@ -33,7 +33,7 @@ export default {
   methods: {
     sendSizeValue() {
       this.$emit("sizeValue", this.sizeValue);
-      console.log(this.sizeValue);
+      // console.log(this.sizeValue);
     },
   },
 };

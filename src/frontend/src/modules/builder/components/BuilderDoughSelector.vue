@@ -36,7 +36,7 @@ export default {
   methods: {
     sendDoughValue() {
       this.$emit("doughValue", this.doughValue);
-      console.log(this.doughValue);
+      // console.log(this.doughValue);
     },
   },
 };

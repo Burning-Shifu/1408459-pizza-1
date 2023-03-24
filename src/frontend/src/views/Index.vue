@@ -115,10 +115,12 @@
               />
             </div>
 
-            <div class="content__result">
-              <p>Итого: 0 ₽</p>
-              <button type="button" class="button" disabled>Готовьте!</button>
-            </div>
+            <BuilderPriceCounter
+              :order="order"
+              :pizza="pizza"
+              :features="features"
+              @priceValue="getPriceValue"
+            />
           </div>
         </div>
       </form>
@@ -135,6 +137,7 @@ import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
 import BuilderSausesSelector from "@/modules/builder/components/BuilderSausesSelector";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
+import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 
 export default {
   name: "IndexHome",
@@ -144,6 +147,7 @@ export default {
     BuilderSausesSelector,
     BuilderIngredientsSelector,
     BuilderSizeSelector,
+    BuilderPriceCounter,
   },
   data() {
     return {
@@ -188,7 +192,8 @@ export default {
         saucesValue: "tomato",
         ingredientsValue: {},
       },
-      target: "",
+      price: 0,
+      // target: "",
     };
   },
   methods: {
@@ -204,7 +209,6 @@ export default {
       this.order.sizeValue = value;
       this.$forceUpdate();
       console.log("child component said: SizeValue", value);
-      // console.log("order SizeValue", this.order.sizeValue);
     },
     getIngredientsValue(value, target) {
       if (target.classList.contains("counter__button--plus")) {
@@ -228,6 +232,18 @@ export default {
       this.$forceUpdate();
       console.log("child component said: IngredientValue", value);
       console.log("order IngredientsValue", this.order.ingredientsValue);
+    },
+    getPriceValue(value) {
+      this.price = value;
+      console.log("child component said: PriceValue", value);
+    },
+  },
+  watch: {
+    order: {
+      handler: function () {
+        this.getPriceValue();
+      },
+      deep: true,
     },
   },
 };

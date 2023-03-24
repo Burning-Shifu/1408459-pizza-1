@@ -32,7 +32,7 @@ export default {
   methods: {
     sendSaucesValue() {
       this.$emit("saucesValue", this.saucesValue);
-      console.log(this.saucesValue);
+      // console.log(this.saucesValue);
     },
   },
 };

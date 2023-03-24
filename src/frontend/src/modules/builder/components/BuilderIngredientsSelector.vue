@@ -64,7 +64,7 @@ export default {
   methods: {
     sendIngredientValue(target) {
       this.$emit("ingredientValue", this.ingredientValue, target);
-      console.log(this.ingredientValue);
+      // console.log(this.ingredientValue);
     },
     plusCounterIngredient() {
       if (this.ingredientCounter < 3) this.ingredientCounter += 1;
